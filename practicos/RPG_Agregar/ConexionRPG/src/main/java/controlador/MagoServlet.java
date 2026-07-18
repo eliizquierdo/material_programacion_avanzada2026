@@ -1,8 +1,8 @@
 package controlador;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import jakarta.servlet.annotation.*;
 import java.io.IOException;
 import modelo.dao.MagoDAO;
 import modelo.vo.MagoVO;
