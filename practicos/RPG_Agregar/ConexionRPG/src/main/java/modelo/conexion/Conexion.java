@@ -9,6 +9,15 @@ import java.util.Properties;
 public class Conexion {
 
     private static final String ARCHIVO = "db.properties";
+    // Registrar el driver JDBC explícitamente (evita "No suitable driver found" en Tomcat)
+    static {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            System.err.println("ERROR: No se encontró el driver de MySQL en el classpath.");
+            e.printStackTrace();
+        }
+    }
     private static final Properties config = cargarPropiedades();
 
     private static Properties cargarPropiedades() {
