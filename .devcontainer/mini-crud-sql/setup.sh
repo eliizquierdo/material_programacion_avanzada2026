@@ -16,33 +16,31 @@ sudo apt-get install -y -qq maven
 echo "✅ Maven instalado"
 
 # ── Tomcat 10 ────────────────────────────
-# ── Tomcat 10 ────────────────────────────
 echo "📦 Instalando Tomcat 10.1.57..."
 sudo mkdir -p "$TOMCAT_HOME"
 
 TOMCAT_URL="https://archive.apache.org/dist/tomcat/tomcat-10/v10.1.57/bin/apache-tomcat-10.1.57.tar.gz"
 curl -SL -A "Mozilla/5.0 (X11; Linux x86_64) Codespace-Setup" --fail "$TOMCAT_URL" -o /tmp/tomcat10.tar.gz
 
-# Verificar que se descargó un archivo real (no una página de error)
 DOWNLOAD_SIZE=$(stat -c%s /tmp/tomcat10.tar.gz 2>/dev/null || echo 0)
 if [ "$DOWNLOAD_SIZE" -lt 1000000 ]; then
   echo "❌ ERROR: la descarga de Tomcat parece incompleta o inválida (tamaño: $DOWNLOAD_SIZE bytes)."
-  echo "   Contenido descargado (primeras líneas, por si es una página de error):"
   head -c 500 /tmp/tomcat10.tar.gz
   exit 1
 fi
 
 sudo tar -xzf /tmp/tomcat10.tar.gz -C "$TOMCAT_HOME" --strip-components=1
 
+# Arreglar permisos ANTES de verificar, para que el usuario actual pueda acceder
+sudo chown -R "$(whoami):$(whoami)" "$TOMCAT_HOME"
+sudo chmod +x "$TOMCAT_HOME"/bin/*.sh
+
 if [ ! -f "$TOMCAT_HOME/bin/startup.sh" ]; then
   echo "❌ ERROR: la extracción de Tomcat no generó la estructura esperada en $TOMCAT_HOME"
-  echo "   Contenido actual de $TOMCAT_HOME:"
   ls -la "$TOMCAT_HOME"
   exit 1
 fi
 
-sudo chmod +x "$TOMCAT_HOME"/bin/*.sh
-sudo chown -R "$(whoami):$(whoami)" "$TOMCAT_HOME"
 echo "✅ Tomcat 10 instalado en $TOMCAT_HOME"
 
 # ── MariaDB ──────────────────────────────
