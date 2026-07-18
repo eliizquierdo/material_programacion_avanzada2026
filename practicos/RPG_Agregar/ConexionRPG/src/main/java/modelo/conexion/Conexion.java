@@ -6,15 +6,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-/**
- * Factoría estática de conexiones a la base de datos.
- * Las credenciales se leen desde src/main/resources/db.properties.
- */
 public class Conexion {
 
     private static final String ARCHIVO = "db.properties";
-
-    // Las propiedades se cargan UNA SOLA VEZ cuando arranca la aplicación
     private static final Properties config = cargarPropiedades();
 
     private static Properties cargarPropiedades() {
@@ -36,10 +30,6 @@ public class Conexion {
         return props;
     }
 
-    /**
-     * Devuelve una nueva conexión a la base de datos.
-     * Recuerda cerrarla con try-with-resources en el DAO.
-     */
     public static Connection obtener() throws SQLException {
         String url      = config.getProperty("db.url");
         String usuario  = config.getProperty("db.username");
