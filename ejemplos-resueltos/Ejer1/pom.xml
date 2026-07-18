@@ -14,6 +14,9 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Cada uno cambia esto por la ruta real de su Tomcat 10.1.x instalado -->
+        <!-- También se puede sobreescribir sin editar el archivo: mvn cargo:run -Dtomcat.home=C:\tu\ruta -->
+        <tomcat.home>C:\apache-tomcat-10.1.x</tomcat.home>
     </properties>
 
     <dependencies>
@@ -36,21 +39,19 @@
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
- <!-- Pluging para desplegar en Tomcat 10.1 instalado -->
-             <plugin>
+            <!-- Pluging para desplegar en Tomcat 10.1 instalado -->
+            <plugin>
                 <groupId>org.codehaus.cargo</groupId>
                 <artifactId>cargo-maven3-plugin</artifactId>
                 <version>1.10.13</version>
                 <configuration>
                     <container>
                         <containerId>tomcat10x</containerId>
-                        <!-- OJO: esta ruta debe coincidir EXACTO con la carpeta donde cada uno tenga instalado su Tomcat 10.1.x -->
-                        <home>C:\apache-tomcat-10.1.57</home>
+                        <home>${tomcat.home}</home>
                     </container>
                     <configuration>
                         <type>existing</type>
-                        <!-- OJO: misma ruta que arriba, debe existir en el sistema o falla con "is not a directory" -->
-                        <home>C:\apache-tomcat-10.1.57</home>
+                        <home>${tomcat.home}</home>
                     </configuration>
                 </configuration>
             </plugin>
