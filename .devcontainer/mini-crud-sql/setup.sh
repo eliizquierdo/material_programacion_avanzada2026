@@ -18,7 +18,7 @@ echo "✅ Maven instalado"
 # ── Tomcat 10 ────────────────────────────
 echo "📦 Instalando Tomcat 10.1.57..."
 sudo mkdir -p "$TOMCAT_HOME"
-curl -sL https://archive.apache.org/dist/tomcat/tomcat-10/v10.1.57/bin/apache-tomcat-10.1.57.tar.gz -o /tmp/tomcat10.tar.gz
+curl -sL -A "Mozilla/5.0 (X11; Linux x86_64) Codespace-Setup" --fail https://archive.apache.org/dist/tomcat/tomcat-10/v10.1.57/bin/apache-tomcat-10.1.57.tar.gz -o /tmp/tomcat10.tar.gz
 sudo tar -xzf /tmp/tomcat10.tar.gz -C "$TOMCAT_HOME" --strip-components=1
 sudo chmod +x "$TOMCAT_HOME"/bin/*.sh
 sudo chown -R "$(whoami):$(whoami)" "$TOMCAT_HOME"
