@@ -70,19 +70,19 @@ MINI-CRUD1/
 ## Instalación y Uso
 
 ### Prerrequisitos
-- Java JDK 8 o superior
-- Apache Tomcat 7 o superior  
+- Java JDK 17 o superior
+- Apache Tomcat 10.1 o superior  
 - Maven para gestión de dependencias
 
 ### Instalación
-1. **Descargar el proyecto**: [MINI-CRUD1.zip](https://github.com/eliizquierdo/material-programacion-avanzada/blob/main/ProyectosTeoricos/mini-crud1/mini-crud1.zip)
+1. **Descargar el proyecto**: [MINI-CRUD1.zip](https://github.com/eliizquierdo/material_programacion_avanzada2026/blob/main/proyectos-teoricos/mini-crud1/mini-crud1.zip)
 
 2. **Extraer el archivo** y abrir la carpeta del proyecto con VS Code
 
 3. **Ejecutar en la terminal**:
 ```bash
-   mvn package
-   mvn tomcat7:run
+   mvn clean package
+   mvn cargo:run
 ```
  
 
