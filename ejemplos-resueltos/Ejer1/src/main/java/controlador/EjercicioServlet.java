@@ -1,8 +1,8 @@
 package controlador;
 
 import java.io.IOException;
-import javax.servlet.*;
-import javax.servlet.http.*;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
 
 public class EjercicioServlet extends HttpServlet {
 
