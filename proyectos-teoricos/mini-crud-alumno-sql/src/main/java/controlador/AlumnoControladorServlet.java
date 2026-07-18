@@ -1,9 +1,9 @@
 package controlador;
 
 import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.*;
 
 import modelo.dao.AlumnoDAO;
 import modelo.vo.AlumnoVO;
