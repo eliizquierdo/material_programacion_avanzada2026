@@ -21,6 +21,10 @@ sudo mkdir -p "$TOMCAT_HOME"
 curl -sL https://archive.apache.org/dist/tomcat/tomcat-10/v10.1.57/bin/apache-tomcat-10.1.57.tar.gz -o /tmp/tomcat10.tar.gz
 sudo tar -xzf /tmp/tomcat10.tar.gz -C "$TOMCAT_HOME" --strip-components=1
 sudo chmod +x "$TOMCAT_HOME"/bin/*.sh
+
+# El usuario del Codespace (vscode) necesita ser dueño para poder desplegar .war ahí
+sudo chown -R "$(whoami):$(whoami)" "$TOMCAT_HOME"
+
 echo "✅ Tomcat 10 instalado en $TOMCAT_HOME"
 
 # ── Filtro para Codespace (arregla redirects y encoding) ──
