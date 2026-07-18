@@ -13,6 +13,9 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
+    <!-- Cada uno cambia esto por la ruta real de su Tomcat 10.1.x instalado -->
+    <!-- También se puede sobreescribir sin editar el archivo: mvn cargo:run -Dtomcat.home=C:\tu\ruta -->
+    <tomcat.home>C:\apache-tomcat-10.1.x</tomcat.home>
   </properties>
 
   <dependencies>
@@ -34,13 +37,11 @@
         <configuration>
           <container>
             <containerId>tomcat10x</containerId>
-            <!-- OJO: esta ruta debe coincidir EXACTO con la carpeta donde cada uno tenga instalado su Tomcat 10.1.x -->
-            <home>C:\apache-tomcat-10.1.57</home>
+            <home>${tomcat.home}</home>
           </container>
           <configuration>
             <type>existing</type>
-            <!-- OJO: misma ruta que arriba, debe existir en el sistema o falla con "is not a directory" -->
-            <home>C:\apache-tomcat-10.1.57</home>
+            <home>${tomcat.home}</home>
           </configuration>
         </configuration>
       </plugin>
