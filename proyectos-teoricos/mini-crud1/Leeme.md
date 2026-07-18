@@ -80,10 +80,11 @@ MINI-CRUD1/
 2. **Extraer el archivo** y abrir la carpeta del proyecto con VS Code
 
 3. **Ejecutar en la terminal**:
-   ```bash
+```bash
    mvn package
    mvn tomcat7:run
-   ```
+```
+ 
 
 4. **Acceder a la aplicación**: `http://localhost:8080/mini-crud1`
 
