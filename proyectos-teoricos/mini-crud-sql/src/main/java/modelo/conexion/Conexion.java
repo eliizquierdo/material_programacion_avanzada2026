@@ -14,6 +14,16 @@ public class Conexion {
 
     private static final String ARCHIVO = "db.properties";
 
+    // Registrar el driver JDBC explícitamente (evita "No suitable driver found" en Tomcat)
+    static {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            System.err.println("ERROR: No se encontró el driver de MySQL en el classpath.");
+            e.printStackTrace();
+        }
+    }
+
     // Las propiedades se cargan UNA SOLA VEZ cuando arranca la aplicación
     private static final Properties config = cargarPropiedades();
 
