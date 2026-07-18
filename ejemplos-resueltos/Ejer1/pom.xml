@@ -44,12 +44,13 @@
                 <configuration>
                     <container>
                         <containerId>tomcat10x</containerId>
-                        <type>existing</type>
-                        <home>C:\apache-tomcat-10.1.x</home>     <!--OJO AQUÍ SE PONE LA RUTA DEL TOMCAT INSTALADO -->
+                        <!-- OJO: esta ruta debe coincidir EXACTO con la carpeta donde cada uno tenga instalado su Tomcat 10.1.x -->
+                        <home>C:\apache-tomcat-10.1.57</home>
                     </container>
                     <configuration>
                         <type>existing</type>
-                        <home>C:\apache-tomcat-10.1.x</home>
+                        <!-- OJO: misma ruta que arriba, debe existir en el sistema o falla con "is not a directory" -->
+                        <home>C:\apache-tomcat-10.1.57</home>
                     </configuration>
                 </configuration>
             </plugin>
