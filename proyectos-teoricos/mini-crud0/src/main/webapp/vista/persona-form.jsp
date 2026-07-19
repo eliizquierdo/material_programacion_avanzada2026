@@ -1,19 +1,17 @@
-<%@ page contentType="text/html; charset=UTF-8" %> 
-<% String baseURL =
-request.getContextPath(); %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
     <title>Agregar Persona</title>
-    <link rel="stylesheet" href="<%= baseURL %>/css/styles.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css" />
   </head>
   <body>
     <div class="form-container">
       <h1>Agregar Persona</h1>
 
       <!-- POST al Servlet con action=agregar -->
-      <form action="<%= baseURL %>/persona" method="post">
+      <form action="${pageContext.request.contextPath}/persona" method="post">
         <input type="hidden" name="action" value="agregar" />
 
         <label>Código</label>
@@ -23,7 +21,7 @@ request.getContextPath(); %>
         <input type="text" name="nombre" required />
 
         <button class="btn" type="submit">Guardar</button>
-        <a class="btn btn-secondary" href="<%= baseURL %>/persona">Volver</a>
+        <a class="btn btn-secondary" href="${pageContext.request.contextPath}/persona">Volver</a>
       </form>
     </div>
   </body>
