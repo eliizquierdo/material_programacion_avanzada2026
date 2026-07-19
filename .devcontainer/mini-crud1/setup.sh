@@ -4,6 +4,7 @@ set -e
 PROJECT_DIR="/workspaces/material_programacion_avanzada2026/proyectos-teoricos/mini-crud1"
 DEVCONTAINER_DIR="/workspaces/material_programacion_avanzada2026/.devcontainer/mini-crud1"
 TOMCAT_HOME="/opt/tomcat10"
+CONTEXT_PATH="mini-crud1"
 
 echo ""
 echo "🚀 Configurando entorno Java Web — mini-crud1..."
@@ -44,28 +45,43 @@ mkdir -p "$PROJECT_DIR/src/main/java/com/utu/filter"
 cp "$DEVCONTAINER_DIR/CodespaceRedirectFilter.java" "$PROJECT_DIR/src/main/java/com/utu/filter/"
 echo "✅ Filtro instalado"
 
-if ! grep -q "alias run=" ~/.bashrc; then
-  cat >> ~/.bashrc << ALIASES
+echo "🔧 Creando comando 'run'..."
+sudo tee /usr/local/bin/run > /dev/null << RUNSCRIPT
+#!/bin/bash
+cd "/workspaces/material_programacion_avanzada2026/proyectos-teoricos/mini-crud1"
 
-# ── Java Web shortcuts ──────────────────────────────
-export JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"
-alias run='cd $PROJECT_DIR && mvn clean package cargo:run -Dtomcat.home=$TOMCAT_HOME'
-ALIASES
+if [ -n "\$CODESPACE_NAME" ] && [ -n "\$GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN" ]; then
+  URL="https://\${CODESPACE_NAME}-8080.\${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}/mini-crud1"
+else
+  URL="http://localhost:8080/mini-crud1"
 fi
 
+echo ""
+echo "🌐 Cuando termine de arrancar, la app va a estar en:"
+echo "   \$URL"
+echo ""
+
+mvn clean package cargo:run -Dtomcat.home="/opt/tomcat10"
+RUNSCRIPT
+sudo chmod +x /usr/local/bin/run
+echo "✅ Comando 'run' listo (funciona en cualquier terminal)"
+
+export JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"
+echo 'export JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"' | sudo tee -a /etc/environment > /dev/null
+
 echo "📦 Descargando dependencias Maven..."
-cd "$PROJECT_DIR"
+cd "/workspaces/material_programacion_avanzada2026/proyectos-teoricos/mini-crud1"
 mvn dependency:resolve -q 2>/dev/null || true
 
 echo ""
 echo "╔══════════════════════════════════════════════════════╗"
-echo "║  ✅  Entorno listo — mini-crud1                       ║"
+echo "║  ✅  Entorno listo — mini-crud1"
 echo "╠══════════════════════════════════════════════════════╣"
 echo "║  Java 17 + Maven + Tomcat 10.1.57                     ║"
 echo "╠══════════════════════════════════════════════════════╣"
 echo "║  Comando:                                             ║"
-echo "║    run  →  compilar y desplegar en Tomcat 10          ║"
+echo "║    run  →  compilar y desplegar (funciona ya mismo)   ║"
 echo "╚══════════════════════════════════════════════════════╝"
 echo ""
-echo "👉 Abrí una terminal NUEVA y ejecutá: run"
+echo "👉 Ejecutá: run  (no hace falta abrir una terminal nueva)"
 echo ""
