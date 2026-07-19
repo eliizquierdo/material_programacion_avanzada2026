@@ -4,6 +4,7 @@ set -e
 PROJECT_DIR="/workspaces/material_programacion_avanzada2026/proyectos-teoricos/mini-crud-alumno-sql"
 DEVCONTAINER_DIR="/workspaces/material_programacion_avanzada2026/.devcontainer/mini-crud-alumno-sql"
 TOMCAT_HOME="/opt/tomcat10"
+CONTEXT_PATH="mini-crud-alumno-sql"
 
 echo ""
 echo "🚀 Configurando entorno Java Web — mini-crud-alumno-sql..."
@@ -71,31 +72,53 @@ mkdir -p "$PROJECT_DIR/src/main/java/com/utu/filter"
 cp "$DEVCONTAINER_DIR/CodespaceRedirectFilter.java" "$PROJECT_DIR/src/main/java/com/utu/filter/"
 echo "✅ Filtro instalado"
 
-if ! grep -q "alias run=" ~/.bashrc; then
-  cat >> ~/.bashrc << ALIASES
+echo "🔧 Creando comando 'run'..."
+sudo tee /usr/local/bin/run > /dev/null << RUNSCRIPT
+#!/bin/bash
+cd "/workspaces/material_programacion_avanzada2026/proyectos-teoricos/mini-crud-alumno-sql"
 
-# ── Java Web shortcuts ──────────────────────────────
-export JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"
-alias run='cd $PROJECT_DIR && mvn clean package cargo:run -Dtomcat.home=$TOMCAT_HOME'
-alias mysql-institutoweb='mysql -u java_dev -pjava2026 institutoWeb'
-ALIASES
+if [ -n "\$CODESPACE_NAME" ] && [ -n "\$GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN" ]; then
+  URL="https://\${CODESPACE_NAME}-8080.\${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}/mini-crud-alumno-sql"
+else
+  URL="http://localhost:8080/mini-crud-alumno-sql"
 fi
 
+echo ""
+echo "🌐 Cuando termine de arrancar, la app va a estar en:"
+echo "   \$URL"
+echo ""
+
+mvn clean package cargo:run -Dtomcat.home="/opt/tomcat10"
+RUNSCRIPT
+sudo chmod +x /usr/local/bin/run
+echo "✅ Comando 'run' listo (funciona en cualquier terminal)"
+
+echo "🔧 Creando comando 'mysql-institutoweb'..."
+sudo tee /usr/local/bin/mysql-institutoweb > /dev/null << MYSQLSCRIPT
+#!/bin/bash
+mysql -u java_dev -pjava2026 institutoWeb
+MYSQLSCRIPT
+sudo chmod +x /usr/local/bin/mysql-institutoweb
+echo "✅ Comando 'mysql-institutoweb' listo"
+
+export JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"
+echo 'export JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"' | sudo tee -a /etc/environment > /dev/null
+
 echo "📦 Descargando dependencias Maven..."
-cd "$PROJECT_DIR"
+cd "/workspaces/material_programacion_avanzada2026/proyectos-teoricos/mini-crud-alumno-sql"
 mvn dependency:resolve -q 2>/dev/null || true
 
 echo ""
 echo "╔══════════════════════════════════════════════════════╗"
-echo "║  ✅  Entorno listo — mini-crud-alumno-sql             ║"
+echo "║  ✅  Entorno listo — mini-crud-alumno-sql"
 echo "╠══════════════════════════════════════════════════════╣"
 echo "║  Java 17 + Maven + Tomcat 10.1.57 + MariaDB           ║"
-echo "║  DB: institutoWeb  /  Usuario: java_dev / java2026    ║"
+echo "║  DB: institutoWeb  /  Usuario: java_dev / java2026"
 echo "╠══════════════════════════════════════════════════════╣"
-echo "║  Comandos:                                            ║"
-echo "║    run                →  compilar y desplegar         ║"
-echo "║    mysql-institutoweb →  abrir consola MariaDB        ║"
+echo "║  Comando:                                             ║"
+echo "║    run  →  compilar y desplegar (funciona ya mismo)   ║"
+echo "║    mysql-institutoweb  →  abrir consola MariaDB"
 echo "╚══════════════════════════════════════════════════════╝"
 echo ""
-echo "👉 Abrí una terminal NUEVA y ejecutá: run"
+echo "👉 Ejecutá: run  (no hace falta abrir una terminal nueva)"
 echo ""
