@@ -1,16 +1,11 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="java.util.List" %>
-<%@ page import="modelo.vo.PersonaVO" %>
-<%
-  String baseURL = request.getContextPath();
-  List<PersonaVO> listaPersonas = (List<PersonaVO>) request.getAttribute("personas");
-%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <title>Listado de Personas</title>
-  <link rel="stylesheet" href="<%= baseURL %>/css/styles.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
 </head>
 <body>
 <div class="page-container">
@@ -26,48 +21,43 @@
         </tr>
       </thead>
       <tbody>
-      <%
-        if (listaPersonas != null && !listaPersonas.isEmpty()) {
-          for (PersonaVO p : listaPersonas) {
-      %>
+      <c:if test="${not empty requestScope.personas}">
+        <c:forEach var="p" items="${requestScope.personas}">
         <tr>
-          <td><%= p.getCodigo() %></td>
-          <td><%= p.getNombre() %></td>
+          <td>${p.codigo}</td>
+          <td>${p.nombre}</td>
           <td class="actions">
             <!-- Botón Editar -->
             <a class="btn btn-edit" 
-               href="<%= baseURL %>/persona?action=cargarEditar&codigo=<%= p.getCodigo() %>"
+               href="${pageContext.request.contextPath}/persona?action=cargarEditar&codigo=${p.codigo}"
                >Editar
             </a>
             
             <!-- Botón Eliminar -->
-            <form action="<%= baseURL %>/persona?action=eliminar" method="post" style="display: inline;">
-              <input type="hidden" name="codigo" value="<%= p.getCodigo() %>">
+            <form action="${pageContext.request.contextPath}/persona?action=eliminar" method="post" style="display: inline;">
+              <input type="hidden" name="codigo" value="${p.codigo}">
               <button type="submit" class="btn btn-danger"
-                      onclick="return confirm('¿Eliminar el registro <%= p.getNombre() %>?');">
+                      onclick="return confirm('¿Eliminar el registro ${p.nombre}?');">
                 Eliminar
               </button>
             </form>
           </td>
         </tr>
-      <%
-          }
-        } else {
-      %>
+        </c:forEach>
+      </c:if>
+      <c:if test="${empty requestScope.personas}">
         <tr>
           <td colspan="3" style="text-align: center; color: #6b7280;">
             No hay personas registradas
           </td>
         </tr>
-      <%
-        }
-      %>
+      </c:if>
       </tbody>
     </table>
   </div>
 
   <div class="section-gap">
-    <a class="btn" href="<%= baseURL %>/persona?action=agregar">Agregar Persona</a>
+    <a class="btn" href="${pageContext.request.contextPath}/persona?action=agregar">Agregar Persona</a>
   </div>
 </div>
 </body>
