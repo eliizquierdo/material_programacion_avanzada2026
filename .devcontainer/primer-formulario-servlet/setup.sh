@@ -40,6 +40,11 @@ fi
 
 echo "✅ Tomcat 10 instalado en $TOMCAT_HOME"
 
+echo "🔧 Instalando filtro de Codespace..."
+mkdir -p "$PROJECT_DIR/src/main/java/com/utu/filter"
+cp "$DEVCONTAINER_DIR/CodespaceRedirectFilter.java" "$PROJECT_DIR/src/main/java/com/utu/filter/"
+echo "✅ Filtro instalado"
+
 echo "🔧 Creando comando 'run'..."
 sudo tee /usr/local/bin/run > /dev/null << RUNSCRIPT
 #!/bin/bash
