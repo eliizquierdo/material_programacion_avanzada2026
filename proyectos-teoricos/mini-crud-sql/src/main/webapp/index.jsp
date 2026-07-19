@@ -1,12 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%
-  String baseURL = request.getContextPath();
-%>
 <!DOCTYPE html>
     <html>
     <head>
         <title>Formulario Agregar Personas</title>
-        <link rel="stylesheet" href="<%= baseURL %>/css/styles.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
     </head>
     <body>
         <div class="form-container">
