@@ -1,0 +1,57 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.utu</groupId>
+  <artifactId>ejemplo-sesiones</artifactId>
+  <version>1.0</version>
+  <packaging>war</packaging>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <!-- Cada uno cambia esto por la ruta real de su Tomcat 10.1.x instalado -->
+    <!-- También se puede sobreescribir sin editar el archivo: mvn cargo:run -Dtomcat.home=C:\tu\ruta -->
+    <tomcat.home>C:\apache-tomcat-10.1.x</tomcat.home>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
+      <version>6.0.0</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <finalName>ejemplo-sesiones</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.4.0</version>
+        <configuration>
+          <failOnMissingWebXml>false</failOnMissingWebXml>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.cargo</groupId>
+        <artifactId>cargo-maven3-plugin</artifactId>
+        <version>1.10.13</version>
+        <configuration>
+          <container>
+            <containerId>tomcat10x</containerId>
+            <home>${tomcat.home}</home>
+          </container>
+          <configuration>
+            <type>existing</type>
+            <home>${tomcat.home}</home>
+          </configuration>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
