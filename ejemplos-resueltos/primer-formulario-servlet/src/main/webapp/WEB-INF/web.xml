@@ -5,4 +5,8 @@
                              https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
          version="6.0">
   <display-name>primer-formulario-servlet</display-name>
+
+  <welcome-file-list>
+    <welcome-file>formulario.jsp</welcome-file>
+  </welcome-file-list>
 </web-app>
