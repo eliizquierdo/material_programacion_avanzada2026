@@ -1,0 +1,43 @@
+{
+  "name": "Java Web — ConexionRPG (Programación Avanzada)",
+  "image": "mcr.microsoft.com/devcontainers/java:1-17-bullseye",
+
+  "workspaceFolder": "/workspaces/material_programacion_avanzada2026/practicos/RPG_Agregar/ConexionRPG",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscjava.vscode-java-pack",
+        "vscjava.vscode-maven",
+        "rangav.vscode-thunder-client",
+        "formulahendry.auto-rename-tag",
+        "ms-vscode.live-server"
+      ],
+      "settings": {
+        "java.configuration.runtimes": [
+          { "name": "JavaSE-17", "default": true }
+        ],
+        "editor.formatOnSave": true,
+        "editor.tabSize": 4,
+        "files.encoding": "utf8"
+      }
+    }
+  },
+
+  "postCreateCommand": "bash /workspaces/material_programacion_avanzada2026/.devcontainer/ConexionRPG/setup.sh",
+  "postStartCommand": "sudo service mariadb start 2>/dev/null || true",
+
+  "forwardPorts": [8080, 3306],
+  "portsAttributes": {
+    "8080": {
+      "label": "Tomcat 10 — app web",
+      "onAutoForward": "notify"
+    },
+    "3306": {
+      "label": "MariaDB",
+      "onAutoForward": "silent"
+    }
+  },
+
+  "remoteUser": "vscode"
+}
