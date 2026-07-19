@@ -1,0 +1,38 @@
+{
+  "name": "Java Web — mini-crud2 (Programación Avanzada)",
+  "image": "mcr.microsoft.com/devcontainers/java:1-17-bullseye",
+
+  "workspaceFolder": "/workspaces/material_programacion_avanzada2026/proyectos-teoricos/mini-crud2",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscjava.vscode-java-pack",
+        "vscjava.vscode-maven",
+        "rangav.vscode-thunder-client",
+        "formulahendry.auto-rename-tag",
+        "ms-vscode.live-server"
+      ],
+      "settings": {
+        "java.configuration.runtimes": [
+          { "name": "JavaSE-17", "default": true }
+        ],
+        "editor.formatOnSave": true,
+        "editor.tabSize": 4,
+        "files.encoding": "utf8"
+      }
+    }
+  },
+
+  "postCreateCommand": "bash /workspaces/material_programacion_avanzada2026/.devcontainer/mini-crud2/setup.sh",
+
+  "forwardPorts": [8080],
+  "portsAttributes": {
+    "8080": {
+      "label": "Tomcat 10 — app web",
+      "onAutoForward": "notify"
+    }
+  },
+
+  "remoteUser": "vscode"
+}
