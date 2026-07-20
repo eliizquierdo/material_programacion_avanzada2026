@@ -8,16 +8,9 @@ public class AlumnoVO extends PersonaVO {
         super();
     }
 
-    // Constructor completo (para cuando ya existe el código)
+    // Constructor completo (código, nombre y teléfono)
     public AlumnoVO(int codigo, String nombre, String telefono) {
         super(codigo, nombre);
-        this.telefono = telefono;
-    }
-
-    // Constructor sin código (para INSERT - código autoincremental)
-    public AlumnoVO(String nombre, String telefono) {
-        super();
-        this.setNombre(nombre);
         this.telefono = telefono;
     }
 
