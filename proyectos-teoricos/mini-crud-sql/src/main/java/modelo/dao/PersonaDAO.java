@@ -10,7 +10,7 @@ public class PersonaDAO {
 
     public List<PersonaVO> listarPersonas() {
         List<PersonaVO> lista = new ArrayList<>();
-        String sql = "SELECT * FROM persona";
+        String sql = "SELECT * FROM personas";
 
         try (Connection con = Conexion.obtener();
              PreparedStatement ps = con.prepareStatement(sql);
@@ -29,7 +29,7 @@ public class PersonaDAO {
     }
 
     public boolean agregarPersona(PersonaVO persona) {
-        String sql = "INSERT INTO persona(codigo, nombre) VALUES (?, ?)";
+        String sql = "INSERT INTO personas(codigo, nombre) VALUES (?, ?)";
         boolean exito = false;
 
         try (Connection con = Conexion.obtener();
@@ -47,7 +47,7 @@ public class PersonaDAO {
     }
 
     public boolean actualizarPersona(PersonaVO persona) {
-        String sql = "UPDATE persona SET nombre = ? WHERE codigo = ?";
+        String sql = "UPDATE personas SET nombre = ? WHERE codigo = ?";
         boolean exito = false;
 
         try (Connection con = Conexion.obtener();
@@ -67,7 +67,7 @@ public class PersonaDAO {
     }
 
     public boolean eliminarPersona(int codigo) {
-        String sql = "DELETE FROM persona WHERE codigo = ?";
+        String sql = "DELETE FROM personas WHERE codigo = ?";
         boolean exito = false;
 
         try (Connection con = Conexion.obtener();
@@ -86,7 +86,7 @@ public class PersonaDAO {
     }
 
     public PersonaVO obtenerPersonaPorCodigo(int codigo) {
-        String sql = "SELECT * FROM persona WHERE codigo = ?";
+        String sql = "SELECT * FROM personas WHERE codigo = ?";
         PersonaVO persona = null;
 
         try (Connection con = Conexion.obtener();
