@@ -70,11 +70,35 @@ public class PersonaControladorServlet extends HttpServlet {
 
     // ===================== Acciones privadas =====================
     private void agregar(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
-        int codigo = Integer.parseInt(request.getParameter("codigo"));
+            throws IOException, ServletException { // Se necesita ServletException para usar forward
+
+        PersonaVO personaParaFormulario = null;
+        int codigo = 0;
         String nombre = request.getParameter("nombre");
-        dao.agregarPersona(new PersonaVO(codigo, nombre));
-        response.sendRedirect(request.getContextPath() + "/persona"); // PRG → listar
+
+        // 1. Obtener y validar el código
+        codigo = Integer.parseInt(request.getParameter("codigo"));
+        personaParaFormulario = new PersonaVO(codigo, nombre.trim());
+
+        // 2. 🛑 VERIFICACIÓN DE UNICIDAD USANDO EL DAO 🛑
+        PersonaVO personaExistente = dao.obtenerPersonaPorCodigo(codigo);
+
+        if (personaExistente != null) {
+            // Error: Código duplicado
+            request.setAttribute("error",
+                    "Error: El código " + codigo + " ya está registrado. Ingrese uno diferente.");
+            request.setAttribute("persona", personaParaFormulario); // Mantener datos
+
+            // Usar FORWARD para volver al formulario y mostrar el error/datos
+            request.getRequestDispatcher("/vista/persona-form.jsp").forward(request, response);
+            return; // Detener la ejecución
+        }
+
+        // 3. Si es único (personaExistente == null), agregar
+        dao.agregarPersona(personaParaFormulario);
+
+        // 4. PRG (Redirección al listado)
+        response.sendRedirect(request.getContextPath() + "/persona");
     }
 
     private void cargarEditar(HttpServletRequest request, HttpServletResponse response)
