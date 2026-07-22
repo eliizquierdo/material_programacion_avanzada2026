@@ -29,7 +29,7 @@
         apache-maven-3.9.10\
         apache-tomcat-10.1.x\
         *jdk*17*.msi                (instalador Eclipse Temurin JDK 17)
-        *VSCodeSetup*.exe           (instalador de sistema de VS Code, no el "User Installer")
+        *VSCodeSetup*.exe o *VSCodeUserSetup*.exe  (System o User Installer de VS Code, cualquiera de los dos)
         extensions\*.vsix           (todas las extensiones del perfil, ver README)
         demo17\                     (proyecto demo ya descomprimido, no un .zip)
 
@@ -77,7 +77,7 @@ if (-not (Test-Path $RecursosPath)) {
 $MavenFolder  = Get-ChildItem -Path $RecursosPath -Directory -Filter "apache-maven-*"  | Select-Object -First 1
 $TomcatFolder = Get-ChildItem -Path $RecursosPath -Directory -Filter "apache-tomcat-*" | Select-Object -First 1
 $JdkMsi       = Get-ChildItem -Path $RecursosPath -Recurse -File -Filter "*.msi" | Where-Object { $_.Name -match "jdk.*17" } | Select-Object -First 1
-$VSCodeExe    = Get-ChildItem -Path $RecursosPath -Recurse -File -Filter "*VSCodeSetup*.exe" | Select-Object -First 1
+$VSCodeExe    = Get-ChildItem -Path $RecursosPath -Recurse -File -Filter "*.exe" | Where-Object { $_.Name -match "VSCode.*Setup" } | Select-Object -First 1
 $DemoFolder   = Get-ChildItem -Path $RecursosPath -Directory -Filter "demo17" | Select-Object -First 1
 $ExtensionesPath = Join-Path $RecursosPath "extensions"
 
