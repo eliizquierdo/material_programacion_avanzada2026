@@ -1,66 +1,41 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-
-  <groupId>com.utu</groupId>
-  <artifactId>demo</artifactId>
-  <version>1.0</version>
-  <packaging>war</packaging>
-
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>17</maven.compiler.source>
-    <maven.compiler.target>17</maven.compiler.target>
-  </properties>
-
-  <dependencies>
-    <dependency>
-      <groupId>jakarta.servlet</groupId>
-      <artifactId>jakarta.servlet-api</artifactId>
-      <version>6.0.0</version>
-      <scope>provided</scope>
-    </dependency>
-  </dependencies>
-
-  <build>
-    <finalName>demo</finalName>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-toolchains-plugin</artifactId>
-        <version>3.1.0</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>toolchain</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <toolchains>
-            <jdk>
-              <version>17</version>
-            </jdk>
-          </toolchains>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.cargo</groupId>
-        <artifactId>cargo-maven3-plugin</artifactId>
-        <version>1.10.13</version>
-        <configuration>
-          <container>
-            <containerId>tomcat10x</containerId>
-            <home>C:\apache-tomcat-10.1.57</home>
-          </container>
-          <configuration>
-            <type>existing</type>
-            <home>C:\apache-tomcat-10.1.57</home>
-          </configuration>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<modelVersion>4.0.0</modelVersion>
+<groupId>com.utu</groupId>
+<artifactId>demo</artifactId>
+<version>1.0</version>
+<packaging>war</packaging>
+<properties>
+<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+<maven.compiler.source>17</maven.compiler.source>
+<maven.compiler.target>17</maven.compiler.target>
+<tomcat.home>C:\apache-tomcat-10.1.57</tomcat.home>
+</properties>
+<dependencies>
+<dependency>
+<groupId>jakarta.servlet</groupId>
+<artifactId>jakarta.servlet-api</artifactId>
+<version>6.0.0</version>
+<scope>provided</scope>
+</dependency>
+</dependencies>
+<build>
+<finalName>demo</finalName>
+<plugins>
+<plugin>
+<groupId>org.codehaus.cargo</groupId>
+<artifactId>cargo-maven3-plugin</artifactId>
+<version>1.10.13</version>
+<configuration>
+<container>
+<containerId>tomcat10x</containerId>
+<home>${tomcat.home}</home>
+</container>
+<configuration>
+<type>existing</type>
+<home>${tomcat.home}</home>
+</configuration>
+</configuration>
+</plugin>
+</plugins>
+</build>
 </project>
