@@ -65,6 +65,31 @@ function Refrescar-Path {
 }
 
 # ---------------------------------------------------------------------------
+# Detectar la cuenta con sesion interactiva activa
+# ---------------------------------------------------------------------------
+# Si el script corre elevado con una cuenta de Administrador distinta a la que
+# realmente usa la persona en el dia a dia (comun en salas de informatica),
+# $env:APPDATA / $env:USERPROFILE apuntan al perfil del Administrador, no al
+# de la cuenta real. Por eso se detecta la cuenta con sesion abierta en la
+# pantalla y se usa su perfil explicitamente para settings.json y extensiones.
+$usuarioInteractivo = (Get-CimInstance Win32_ComputerSystem).UserName -replace '^.*\\', ''
+if ([string]::IsNullOrWhiteSpace($usuarioInteractivo)) {
+    Write-Host "No se pudo detectar la cuenta con sesion activa, se usa la cuenta actual ($env:USERNAME)." -ForegroundColor Yellow
+    $usuarioInteractivo = $env:USERNAME
+}
+$perfilInteractivo = Join-Path "C:\Users" $usuarioInteractivo
+if (-not (Test-Path $perfilInteractivo)) {
+    Write-Host "No se encontro el perfil en '$perfilInteractivo', se usa $env:USERPROFILE en su lugar." -ForegroundColor Yellow
+    $perfilInteractivo = $env:USERPROFILE
+    $usuarioInteractivo = $env:USERNAME
+}
+Write-Host "Cuenta detectada para aplicar VS Code / configuracion / vs_workspace: $usuarioInteractivo ($perfilInteractivo)"
+
+$appDataInteractivo = Join-Path $perfilInteractivo "AppData\Roaming"
+$vscodeUserDataDir   = Join-Path $appDataInteractivo "Code"
+$vscodeExtensionsDir = Join-Path $perfilInteractivo ".vscode\extensions"
+
+# ---------------------------------------------------------------------------
 # Verificaciones previas
 # ---------------------------------------------------------------------------
 Write-Paso "Verificando carpeta de recursos"
@@ -99,19 +124,43 @@ if ($faltantes.Count -gt 0) {
 # ---------------------------------------------------------------------------
 Write-Paso "Paso 0: Verificando VS Code"
 
+if ($VSCodeExe.Name -match "VSCodeUserSetup" -and $usuarioInteractivo -ne $env:USERNAME) {
+    Write-Host "ADVERTENCIA: el instalador es 'VSCodeUserSetup' (instalacion por usuario) y el script corre como '$env:USERNAME', distinto de la cuenta con sesion activa ('$usuarioInteractivo')." -ForegroundColor Red
+    Write-Host "VS Code va a quedar instalado solo para '$env:USERNAME' y NO va a aparecer para '$usuarioInteractivo'." -ForegroundColor Red
+    Write-Host "Se recomienda usar el instalador 'VSCodeSetup' (System Installer, no 'User'), que instala en Archivos de Programa y queda disponible para todas las cuentas." -ForegroundColor Yellow
+}
+
+$VersionMinimaVSCode = [version]"1.90.0"
 $codeCmd = Get-Command code -ErrorAction SilentlyContinue
+$necesitaInstalarVSCode = $true
+
 if ($codeCmd) {
-    Write-Host "VS Code ya esta instalado, se omite instalacion."
+    $versionActualTexto = (& code --version)[0].Trim()
+    try {
+        if ([version]$versionActualTexto -ge $VersionMinimaVSCode) {
+            $necesitaInstalarVSCode = $false
+            Write-Host "VS Code $versionActualTexto ya esta instalado (version reciente), se omite instalacion."
+        } else {
+            Write-Host "VS Code $versionActualTexto esta instalado pero es una version vieja (minimo recomendado: $VersionMinimaVSCode). Se va a actualizar." -ForegroundColor Yellow
+        }
+    } catch {
+        Write-Host "No se pudo interpretar la version de VS Code ('$versionActualTexto'). Se va a intentar actualizar de todas formas." -ForegroundColor Yellow
+    }
 } else {
+    Write-Host "VS Code no esta instalado."
+}
+
+if ($necesitaInstalarVSCode) {
     Write-Host "Instalando VS Code desde $($VSCodeExe.FullName) (modo silencioso)..."
     # /MERGETASKS agrega VS Code al PATH del sistema durante la instalacion silenciosa
+    # El mismo instalador, corrido sobre una version existente, la actualiza en vez de duplicarla.
     Start-Process -FilePath $VSCodeExe.FullName -ArgumentList "/VERYSILENT /NORESTART /MERGETASKS=!runcode,addtopath" -Wait
     Refrescar-Path
     $codeCmd = Get-Command code -ErrorAction SilentlyContinue
     if (-not $codeCmd) {
         Write-Host "VS Code se instalo pero 'code' no esta disponible en esta sesion. Continuando; las extensiones se instalaran igual si se encuentra el ejecutable." -ForegroundColor Yellow
     } else {
-        Write-Host "VS Code instalado correctamente."
+        Write-Host "VS Code instalado/actualizado correctamente ($((& code --version)[0]))."
     }
 }
 
@@ -123,7 +172,10 @@ if (Test-Path $ExtensionesPath) {
     }
     foreach ($vsix in $vsixFiles) {
         Write-Host "Instalando extension: $($vsix.Name)"
-        & code --install-extension $vsix.FullName --force
+        # --user-data-dir y --extensions-dir apuntan explicitamente al perfil de la cuenta
+        # interactiva detectada, para que la extension quede disponible ahi (y no en el
+        # perfil de la cuenta con la que corre este script si son distintas).
+        & code --install-extension $vsix.FullName --force --user-data-dir $vscodeUserDataDir --extensions-dir $vscodeExtensionsDir
     }
 } else {
     Write-Host "No se encontro la carpeta 'extensions' dentro de $RecursosPath, se omite instalacion de extensiones." -ForegroundColor Yellow
@@ -134,7 +186,7 @@ if (Test-Path $ExtensionesPath) {
 # ---------------------------------------------------------------------------
 Write-Paso "Paso 0.5: Aplicando configuracion de usuario (perfil java-utu)"
 
-$settingsPath = Join-Path $env:APPDATA "Code\User\settings.json"
+$settingsPath = Join-Path $vscodeUserDataDir "User\settings.json"
 $settingsDir  = Split-Path $settingsPath -Parent
 if (-not (Test-Path $settingsDir)) {
     New-Item -ItemType Directory -Path $settingsDir -Force | Out-Null
@@ -271,9 +323,9 @@ Write-Host "Verificando versiones..."
 # ---------------------------------------------------------------------------
 Write-Paso "Paso 4: Ubicacion de vs_workspace"
 
-$ubicacionIngresada = Read-Host "¿Donde queres crear la carpeta 'vs_workspace'? (Enter para usar $env:USERPROFILE\Documents)"
+$ubicacionIngresada = Read-Host "¿Donde queres crear la carpeta 'vs_workspace'? (Enter para usar $perfilInteractivo\Documents)"
 if ([string]::IsNullOrWhiteSpace($ubicacionIngresada)) {
-    $vsWorkspaceBase = Join-Path $env:USERPROFILE "Documents"
+    $vsWorkspaceBase = Join-Path $perfilInteractivo "Documents"
 } else {
     $vsWorkspaceBase = $ubicacionIngresada
 }
