@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Cómo usar instalar-entorno-java-web-ubuntu.sh</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600;700&display=swap');
+ 
+  :root{
+    --bg: #191a23;
+    --panel: #22232f;
+    --panel-2: #262838;
+    --border: #34364a;
+    --text: #e7e7ee;
+    --muted: #9497ab;
+    --amber: #f2a154;
+    --amber-soft: rgba(242,161,84,.12);
+    --green: #7bd88f;
+    --green-soft: rgba(123,216,143,.12);
+    --blue: #7aa2f7;
+    --blue-soft: rgba(122,162,247,.12);
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+    --sans: 'Inter', system-ui, sans-serif;
+  }
+ 
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height:1.55;
+    padding: 48px 20px 80px;
+  }
+ 
+  .wrap{ max-width: 780px; margin: 0 auto; }
+ 
+  header{ margin-bottom: 40px; }
+  .eyebrow{
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--amber);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom: 14px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:8px; height:8px; border-radius:50%;
+    background: var(--amber);
+    box-shadow: 0 0 0 4px var(--amber-soft);
+  }
+  h1{
+    font-family: var(--mono);
+    font-weight:800;
+    font-size: clamp(24px, 4vw, 32px);
+    line-height:1.15;
+    margin: 0 0 10px;
+    letter-spacing: -0.01em;
+  }
+  h1 span{ color: var(--amber); }
+  .subtitle{
+    color: var(--muted);
+    font-size: 15px;
+    max-width: 58ch;
+  }
+ 
+  .toplinks{
+    display:flex; flex-wrap:wrap; gap:10px;
+    margin-top:18px;
+  }
+  .toplinks a{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family: var(--mono);
+    font-size:12.5px;
+    color: var(--text);
+    text-decoration:none;
+    background: var(--panel);
+    border:1px solid var(--border);
+    padding:7px 12px;
+    border-radius:8px;
+  }
+  .toplinks a.warn{ border-color: rgba(242,161,84,.4); color: var(--amber); }
+ 
+  .step{
+    position: relative;
+    display:grid;
+    grid-template-columns: 56px 1fr;
+    gap: 18px;
+    padding-bottom: 34px;
+  }
+  .step:not(:last-child)::before{
+    content:"";
+    position:absolute;
+    left:27px; top:56px; bottom:0;
+    width:2px;
+    background: linear-gradient(var(--border), transparent);
+  }
+  .num{
+    width:56px; height:56px;
+    border-radius:14px;
+    background: var(--panel);
+    border:1px solid var(--border);
+    display:flex; align-items:center; justify-content:center;
+    font-family: var(--mono);
+    font-weight:700;
+    font-size:18px;
+    color: var(--amber);
+    flex-shrink:0;
+  }
+  .content{ padding-top:6px; }
+  .content h2{
+    font-family: var(--mono);
+    font-size: 16px;
+    font-weight:700;
+    margin: 0 0 8px;
+    color: var(--text);
+  }
+  .content p{
+    margin: 0 0 12px;
+    color: var(--muted);
+    font-size: 14.5px;
+  }
+  .content ul{
+    margin: 0 0 12px;
+    padding-left: 20px;
+    color: var(--muted);
+    font-size: 14.5px;
+  }
+  .content li{ margin-bottom: 4px; }
+  .content li code{ color: var(--text); }
+ 
+  code{
+    font-family: var(--mono);
+    background: var(--panel-2);
+    padding: 2px 6px;
+    border-radius: 5px;
+    font-size: 13px;
+    color: var(--green);
+  }
+ 
+  .term{
+    background: #14151d;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow:hidden;
+    margin: 10px 0;
+  }
+  .term-bar{
+    display:flex; gap:6px;
+    padding: 9px 12px;
+    background: var(--panel-2);
+    border-bottom: 1px solid var(--border);
+  }
+  .term-bar span{
+    width:9px; height:9px; border-radius:50%;
+    background: #4b4d63;
+  }
+  .term pre{
+    margin:0;
+    padding: 14px 16px;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--green);
+    overflow-x:auto;
+  }
+ 
+  .badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight:600;
+    letter-spacing:.04em;
+    padding: 3px 9px;
+    border-radius:999px;
+    margin-bottom:10px;
+  }
+  .badge.opt{ background: var(--blue-soft); color: var(--blue); }
+  .badge.warn{ background: var(--amber-soft); color: var(--amber); }
+  .badge.ok{ background: var(--green-soft); color: var(--green); }
+ 
+  .panel{
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-top: 10px;
+  }
+  .panel + .panel{ margin-top: 12px; }
+  .panel-title{
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight:700;
+    margin: 0 0 8px;
+  }
+ 
+  .note{
+    border-radius: 12px;
+    padding: 16px 18px;
+    background: var(--amber-soft);
+    border: 1px solid rgba(242,161,84,.35);
+    margin: 40px 0;
+  }
+  .note h2{
+    font-family: var(--mono);
+    font-size: 15px;
+    margin: 0 0 8px;
+  }
+  .note p{ color: var(--muted); font-size: 14px; margin: 0 0 10px; }
+ 
+  .section-title{
+    font-family: var(--mono);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--amber);
+    margin: 44px 0 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+ 
+  table{
+    width:100%;
+    border-collapse: collapse;
+    margin-bottom: 18px;
+    font-size: 13.5px;
+  }
+  th, td{
+    text-align:left;
+    padding: 9px 10px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  th{
+    font-family: var(--mono);
+    color: var(--amber);
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing:.04em;
+  }
+  td{ color: var(--muted); }
+  td code{ font-size:11.5px; word-break: break-all; }
+  a{ color: var(--blue); }
+ 
+  .hint{
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: -6px;
+    margin-bottom: 18px;
+  }
+ 
+  footer{
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 12.5px;
+    text-align:center;
+  }
+  footer a{ color: var(--muted); }
+ 
+  @media print{
+    body{ background:#fff; color:#111; padding: 24px; }
+    .num{ background:#fff; }
+    .term{ background:#f5f5f5; }
+    .term pre{ color:#111; }
+    code{ background:#eee; color:#111; }
+    table{ font-size:11px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+ 
+  <header>
+    <div class="eyebrow">Ubuntu · Offline · Alternativa automática</div>
+    <h1>Cómo usar <span>instalar-entorno-java-web-ubuntu.sh</span></h1>
+    <p class="subtitle">Deja el entorno Java Web (JDK 17 + Maven + Tomcat + VS Code) listo en una máquina Ubuntu, usando <code>instalar-entorno-java-web-ubuntu.sh</code> en vez de instalar todo a mano.</p>
+    <div class="toplinks">
+      <a href="https://drive.google.com/file/d/1gPr2A8I3pKrr7YgEuULYHj3YGxPaJztf/view?usp=sharing">📄 instalar-entorno-java-web-ubuntu.sh</a>
+      <a href="https://drive.google.com/drive/folders/1_KowRoQBbpR0bPqQt3l7EtpsBgWSM30o?usp=sharing">📦 Carpeta de recursos (Drive)</a>
+      <a class="warn" href="https://github.com/eliizquierdo/material_programacion_avanzada2026/wiki/Anexo-Instalacion-Ubuntu">🖐 Anexo instalación manual</a>
+    </div>
+  </header>
+ 
+  <div class="step">
+    <div class="num">01</div>
+    <div class="content">
+      <h2>Preparar la carpeta recursos-instalacion-ubuntu</h2>
+      <p>Armar esa carpeta (en el USB o la red) con todo junto, incluyendo el script:</p>
+      <ul>
+        <li><code>apache-maven-3.9.10/</code></li>
+        <li><code>apache-tomcat-10.1.x/</code></li>
+        <li>El <code>.tar.gz</code> del JDK 17 (Eclipse Temurin, Linux x64)</li>
+        <li><code>code_*.deb</code> (instalador oficial de VS Code para Debian/Ubuntu)</li>
+        <li>La carpeta <code>extensions/</code> con los <code>.vsix</code></li>
+        <li>La carpeta <code>demo17/</code> ya descomprimida (no un <code>.zip</code>)</li>
+        <li><code>instalar-entorno-java-web-ubuntu.sh</code> — el script va <strong>dentro</strong> de esta misma carpeta</li>
+      </ul>
+    </div>
+  </div>
+ 
+  <div class="step">
+    <div class="num">02</div>
+    <div class="content">
+      <h2>Copiar la carpeta y darle permiso de ejecución al script</h2>
+      <p>Copiar toda la carpeta <code>recursos-instalacion-ubuntu</code> (con el script adentro) desde el USB o la red a la máquina, por ejemplo a <code>~/recursos-instalacion-ubuntu</code>. Luego, en una terminal:</p>
+      <div class="term">
+        <div class="term-bar"><span></span><span></span><span></span></div>
+        <pre>cd ~/recursos-instalacion-ubuntu
+chmod +x instalar-entorno-java-web-ubuntu.sh</pre>
+      </div>
+      <p><code>chmod +x</code> le da permiso de ejecución al archivo — sin esto, la terminal se niega a correrlo aunque tengas <code>sudo</code>.</p>
+    </div>
+  </div>
+ 
+  <div class="step">
+    <div class="num">03</div>
+    <div class="content">
+      <h2>Ejecutar el script con sudo</h2>
+      <p>Como ya estás parado dentro de <code>~/recursos-instalacion-ubuntu</code>, <code>--recursos</code> apunta a esa misma carpeta.</p>
+ 
+      <div class="panel">
+        <p class="panel-title">Opción A — instalación normal</p>
+        <div class="term">
+          <div class="term-bar"><span></span><span></span><span></span></div>
+          <pre>sudo ./instalar-entorno-java-web-ubuntu.sh --recursos ~/recursos-instalacion-ubuntu</pre>
+        </div>
+      </div>
+ 
+      <div class="panel">
+        <span class="badge opt">+ --EJECUTAR-DEMO</span>
+        <p class="panel-title" style="margin-top:0">Opción B — instalación + demo automático</p>
+        <p style="margin-bottom:8px">Compila y levanta Tomcat automáticamente al final, sin pasos manuales.</p>
+        <div class="term">
+          <div class="term-bar"><span></span><span></span><span></span></div>
+          <pre>sudo ./instalar-entorno-java-web-ubuntu.sh --recursos ~/recursos-instalacion-ubuntu --ejecutar-demo</pre>
+        </div>
+      </div>
+ 
+      <p style="margin-top:10px">Si se omite <code>--recursos</code>, el script busca en <code>/media/$USER/recursos-instalacion-ubuntu</code> por defecto (típico punto de montaje de un USB).</p>
+    </div>
+  </div>
+ 
+  <div class="step">
+    <div class="num">04</div>
+    <div class="content">
+      <h2>Responder la pregunta de vs_workspace</h2>
+      <p>El script pregunta dónde crear la carpeta <code>vs_workspace</code>. Escribir una ruta o presionar <code>Enter</code> para usar el home del usuario. El proyecto <code>demo17</code> se copia adentro.</p>
+    </div>
+  </div>
+ 
+  <div class="step">
+    <div class="num">05</div>
+    <div class="content">
+      <h2>Revisar la salida y probar el demo</h2>
+      <p>Al final el script muestra las versiones de <code>java</code> y <code>mvn</code> detectadas.</p>
+ 
+      <div class="panel">
+        <span class="badge opt">CON --ejecutar-demo</span>
+        <p>Tomcat ya queda corriendo (<code>Ctrl+C</code> para detenerlo). Abrir <code>http://localhost:8080/demo</code>.</p>
+      </div>
+      <div class="panel">
+        <span class="badge ok">SIN --ejecutar-demo</span>
+        <p>Entrar a la carpeta <code>demo17</code> dentro de <code>vs_workspace</code> y correr a mano:</p>
+        <div class="term">
+          <div class="term-bar"><span></span><span></span><span></span></div>
+          <pre>mvn clean package
+mvn cargo:run -Dtomcat.home=/opt/apache-tomcat-10.1.x</pre>
+        </div>
+        <p style="margin-top:8px">Luego abrir <code>http://localhost:8080/demo</code>. El <code>-Dtomcat.home</code> es necesario porque el <code>pom.xml</code> trae por defecto otra ruta absoluta distinta a esta.</p>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="note">
+    <span class="badge warn">⚠ SI ALGO FALLA</span>
+    <h2>Puerto 8080 ya en uso</h2>
+    <p>Puede pasar si quedó un Tomcat colgado de un intento anterior. Liberar el puerto antes de volver a correr <code>mvn cargo:run</code>:</p>
+    <div class="term">
+      <div class="term-bar"><span></span><span></span><span></span></div>
+      <pre>sudo fuser -k 8080/tcp</pre>
+    </div>
+    <p style="margin-top:10px">Si <code>fuser</code> no está instalado: <code>sudo apt install psmisc</code>, o como alternativa: <code>sudo lsof -i :8080</code> para ver el PID y después <code>sudo kill -9 &lt;PID&gt;</code>.</p>
+  </div>
+ 
+  <div class="section-title">Fuentes oficiales (por si hay que actualizar la carpeta)</div>
+  <table>
+    <tr><th>Componente</th><th>Fuente oficial</th></tr>
+    <tr><td>Apache Maven 3.9.10</td><td><a href="https://maven.apache.org/download.cgi">maven.apache.org/download.cgi</a></td></tr>
+    <tr><td>Apache Tomcat 10.1.x</td><td><a href="https://tomcat.apache.org/download-10.cgi">tomcat.apache.org/download-10.cgi</a></td></tr>
+    <tr><td>Eclipse Temurin JDK 17 (Linux x64, .tar.gz)</td><td><a href="https://adoptium.net/temurin/releases/?version=17&os=linux&arch=x64">adoptium.net</a></td></tr>
+    <tr><td>Visual Studio Code (.deb)</td><td><a href="https://code.visualstudio.com/download">code.visualstudio.com/download</a></td></tr>
+    <tr><td><code>demo17</code></td><td>Ya está en este repo: <a href="../blob/main/proyectos-teoricos/demo/demo17.zip">proyectos-teoricos/demo/demo17.zip</a></td></tr>
+  </table>
+ 
+  <div class="section-title">Extensiones de VS Code (.vsix)</div>
+  <p class="hint">Cada link descarga siempre la última versión disponible.</p>
+  <table>
+    <tr><th>Extensión</th><th>Link de descarga</th></tr>
+    <tr><td>Language Support for Java (Red Hat)</td><td><code>https://marketplace.visualstudio.com/_apis/public/gallery/publishers/redhat/vsextensions/java/1.55.2026060409/vspackage?targetPlatform=linux-x64</code></td></tr>
+    <tr><td>Debugger for Java</td><td><code>https://marketplace.visualstudio.com/_apis/public/gallery/publishers/vscjava/vsextensions/vscode-java-debug/latest/vspackage</code></td></tr>
+    <tr><td>JSP Language Support</td><td><code>https://marketplace.visualstudio.com/_apis/public/gallery/publishers/samuel-weinhardt/vsextensions/vscode-jsp-lang/latest/vspackage</code></td></tr>
+    <tr><td>Database Client JDBC</td><td><code>https://marketplace.visualstudio.com/_apis/public/gallery/publishers/cweijan/vsextensions/dbclient-jdbc/latest/vspackage</code></td></tr>
+    <tr><td>MySQL (cweijan)</td><td><code>https://marketplace.visualstudio.com/_apis/public/gallery/publishers/cweijan/vsextensions/vscode-mysql-client2/latest/vspackage</code></td></tr>
+  </table>
+ 
+  <footer>Prof. Elizabeth Izquierdo · material_programacion_avanzada2026</footer>
+ 
+</div>
+</body>
+</html>
+ 
