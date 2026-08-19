@@ -23,7 +23,7 @@ public class PersonaControladorServlet extends HttpServlet {
 
         switch (action) {
             case "agregar": // mostrar formulario de alta (GET)
-                request.getRequestDispatcher("/vista/persona-form.jsp")
+                request.getRequestDispatcher("/WEB-INF/vista/persona-form.jsp")
                         .forward(request, response);
                 break;
 
@@ -103,7 +103,7 @@ public class PersonaControladorServlet extends HttpServlet {
 
         if (persona != null) {
             request.setAttribute("persona", persona);
-            request.getRequestDispatcher("/vista/persona-editar.jsp")
+            request.getRequestDispatcher("/WEB-INF/vista/persona-editar.jsp")
                     .forward(request, response);
         } else {
             response.sendRedirect(request.getContextPath() + "/persona");
@@ -113,7 +113,7 @@ public class PersonaControladorServlet extends HttpServlet {
     private void listar(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setAttribute("personas", dao.getLista());
-        request.getRequestDispatcher("/vista/persona-lista.jsp")
+        request.getRequestDispatcher("/WEB-INF/vista/persona-lista.jsp")
                 .forward(request, response);
     }
 }

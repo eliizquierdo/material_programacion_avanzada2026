@@ -23,10 +23,10 @@ public class MagoServlet extends HttpServlet {
         } else if (accion.equals("listar")) {
             List<MagoVO> lista = dao.listarMagos();
             request.setAttribute("magos", lista);
-            RequestDispatcher rd = request.getRequestDispatcher("/vista/mostrarMago.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/vista/mostrarMago.jsp");
             rd.forward(request, response);
         } else if (accion.equals("nuevo")) {
-            RequestDispatcher rd = request.getRequestDispatcher("/vista/agregarMago.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/vista/agregarMago.jsp");
             rd.forward(request, response);
         }
     }

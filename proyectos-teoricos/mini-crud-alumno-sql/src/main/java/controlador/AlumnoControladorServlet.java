@@ -26,7 +26,7 @@ public class AlumnoControladorServlet extends HttpServlet {
 
         switch (action) {
             case "agregar": // mostrar formulario de alta (GET)
-                request.getRequestDispatcher("/vista/alumno-form.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/vista/alumno-form.jsp").forward(request, response);
                 break;
 
             case "editar": // cargar datos y mostrar formulario de edición (GET)
@@ -81,7 +81,7 @@ public class AlumnoControladorServlet extends HttpServlet {
             request.setAttribute("error", "Error al listar alumnos: " + e.getMessage());
             e.printStackTrace();
         }
-        request.getRequestDispatcher("/vista/alumno-lista.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/vista/alumno-lista.jsp").forward(request, response);
     }
 
     private void agregar(HttpServletRequest request, HttpServletResponse response)
@@ -103,7 +103,7 @@ public class AlumnoControladorServlet extends HttpServlet {
                 // Opcional: Para mantener los datos ingresados
                 request.setAttribute("alumno", new AlumnoVO(codigo, nombre, telefono));
 
-                request.getRequestDispatcher("/vista/alumno-form.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/vista/alumno-form.jsp").forward(request, response);
                 return; // Detener la ejecución, no se inserta
             }
 
@@ -116,14 +116,14 @@ public class AlumnoControladorServlet extends HttpServlet {
         } catch (NumberFormatException e) {
             // Manejar error si el código no es un número válido
             request.setAttribute("error", "El código debe ser un número válido.");
-            request.getRequestDispatcher("/vista/alumno-form.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/vista/alumno-form.jsp").forward(request, response);
 
         } catch (Exception e) {
             // Manejar otros errores (DAO, conexión, etc.)
             System.err.println("ERROR al agregar alumno: " + e.getMessage());
             e.printStackTrace();
             request.setAttribute("error", "No se pudo guardar el alumno: " + e.getMessage());
-            request.getRequestDispatcher("/vista/alumno-form.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/vista/alumno-form.jsp").forward(request, response);
         }
     }
 
@@ -133,7 +133,7 @@ public class AlumnoControladorServlet extends HttpServlet {
             int codigo = Integer.parseInt(request.getParameter("id"));
             AlumnoVO alumno = dao.obtenerAlumnoPorCodigo(codigo);
             request.setAttribute("alumno", alumno);
-            request.getRequestDispatcher("/vista/alumno-editar.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/vista/alumno-editar.jsp").forward(request, response);
         } catch (Exception e) {
             System.err.println("ERROR al mostrar editar: " + e.getMessage());
             e.printStackTrace();

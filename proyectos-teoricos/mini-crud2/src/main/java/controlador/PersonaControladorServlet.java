@@ -23,7 +23,7 @@ public class PersonaControladorServlet extends HttpServlet {
 
         switch (action) {
             case "agregar": // mostrar formulario de alta (GET)
-                request.getRequestDispatcher("/vista/persona-form.jsp")
+                request.getRequestDispatcher("/WEB-INF/vista/persona-form.jsp")
                         .forward(request, response);
                 break;
 
@@ -90,7 +90,7 @@ public class PersonaControladorServlet extends HttpServlet {
             request.setAttribute("persona", personaParaFormulario); // Mantener datos
 
             // Usar FORWARD para volver al formulario y mostrar el error/datos
-            request.getRequestDispatcher("/vista/persona-form.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/vista/persona-form.jsp").forward(request, response);
             return; // Detener la ejecución
         }
 
@@ -133,7 +133,7 @@ public class PersonaControladorServlet extends HttpServlet {
 
             request.setAttribute("persona", persona);
 
-            request.getRequestDispatcher("/vista/persona-editar.jsp")
+            request.getRequestDispatcher("/WEB-INF/vista/persona-editar.jsp")
 
                     .forward(request, response);
         } else {
@@ -145,7 +145,7 @@ public class PersonaControladorServlet extends HttpServlet {
     private void listar(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setAttribute("personas", dao.getLista());
-        request.getRequestDispatcher("/vista/persona-lista.jsp")
+        request.getRequestDispatcher("/WEB-INF/vista/persona-lista.jsp")
                 .forward(request, response);
     }
 }

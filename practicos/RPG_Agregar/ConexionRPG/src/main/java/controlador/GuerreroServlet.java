@@ -24,10 +24,10 @@ public class GuerreroServlet extends HttpServlet {
         } else if (accion.equals("listar")) {
             List<GuerreroVO> lista = dao.listarGuerreros();
             request.setAttribute("guerreros", lista);
-            RequestDispatcher rd = request.getRequestDispatcher("/vista/mostrarGuerrero.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/vista/mostrarGuerrero.jsp");
             rd.forward(request, response);
         } else if (accion.equals("nuevo")) {
-            RequestDispatcher rd = request.getRequestDispatcher("/vista/agregarGuerrero.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/vista/agregarGuerrero.jsp");
             rd.forward(request, response);
         }
     }
