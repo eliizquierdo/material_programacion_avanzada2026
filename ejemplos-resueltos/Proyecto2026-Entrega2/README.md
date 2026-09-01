@@ -1,0 +1,1 @@
+Proyecto ejemplo club-ajedrez (resuelto parcialmente) dado en la consigna de la Segunda parte del proyecto de prog2 y BD 
