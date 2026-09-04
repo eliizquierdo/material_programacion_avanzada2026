@@ -22,14 +22,14 @@ Script de instalación automatizada del entorno necesario para las clases de **I
 
 ## Uso
 
-1. Descargar el script `instalar_bd.sh` en la máquina.
+1. Descargar el script `instalar_bd_ubuntu.sh` en la máquina.
 2. Darle permisos de ejecución:
    ```bash
-   chmod +x instalar_bd.sh
+   chmod +x instalar_bd_ubuntu.sh
    ```
 3. Ejecutarlo:
    ```bash
-   ./instalar_bd.sh
+   ./instalar_bd_ubuntu.sh
    ```
 4. Esperar a que finalice. El script muestra en pantalla el progreso de cada instalación y, al final, un resumen de verificación.
 
