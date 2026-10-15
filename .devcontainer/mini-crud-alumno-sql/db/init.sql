@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS personas (
     codigo INT PRIMARY KEY,
-    nombre VARCHAR(30) NOT NULL
+    nombre VARCHAR(10) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS alumnos (
