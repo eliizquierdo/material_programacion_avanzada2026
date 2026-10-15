@@ -9,7 +9,7 @@ USE institutoWeb;
 -- Crear tabla personas
 CREATE TABLE personas (
     codigo INT PRIMARY KEY, -- AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(30) NOT NULL
+    nombre VARCHAR(10) NOT NULL
 );
 
 -- Crear tabla alumno con FK a persona

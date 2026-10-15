@@ -33,10 +33,6 @@ public class AlumnoControladorServlet extends HttpServlet {
                 mostrarEditar(request, response);
                 break;
 
-            case "eliminar": // eliminar por GET (Diseño particular)
-                eliminar(request, response);
-                break;
-
             default: // sin action o desconocida → listar
                 listar(request, response);
                 break;
@@ -62,6 +58,10 @@ public class AlumnoControladorServlet extends HttpServlet {
 
             case "actualizar": // Corresponde a la acción de editar por POST
                 actualizar(request, response);
+                break;
+
+            case "eliminar": // eliminar por POST (formulario con confirm())
+                eliminar(request, response);
                 break;
 
             default:
@@ -169,8 +169,8 @@ public class AlumnoControladorServlet extends HttpServlet {
         } catch (Exception e) {
             System.err.println("ERROR al eliminar alumno: " + e.getMessage());
             e.printStackTrace();
-            // (Opcional: podrías agregar un mensaje de error a la request
-            // antes de redirigir si quisieras mostrarlo en la lista)
+            // (Opcional: se podría guardar un mensaje de error en la sesión
+            // antes de redirigir, para mostrarlo en la lista)
         }
         response.sendRedirect(request.getContextPath() + "/alumno"); // PRG
     }

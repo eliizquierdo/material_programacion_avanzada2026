@@ -34,12 +34,21 @@
                       href="${pageContext.request.contextPath}/alumno?action=editar&id=${a.codigo}"
                       >Editar</a
                     >
-                    <a
-                      class="btn btn-danger"
-                      href="${pageContext.request.contextPath}/alumno?action=eliminar&id=${a.codigo}"
-                      onclick="return confirm('¿Eliminar alumno?');"
-                      >Eliminar</a
+                    <form
+                      action="${pageContext.request.contextPath}/alumno"
+                      method="post"
+                      style="display: inline"
                     >
+                      <input type="hidden" name="action" value="eliminar" />
+                      <input type="hidden" name="id" value="${a.codigo}" />
+                      <button
+                        type="submit"
+                        class="btn btn-danger"
+                        onclick="return confirm('¿Eliminar alumno?');"
+                      >
+                        Eliminar
+                      </button>
+                    </form>
                   </td>
                 </tr>
               </c:forEach>
