@@ -81,7 +81,7 @@ public class PersonaControladorServlet extends HttpServlet {
         personaParaFormulario = new PersonaVO(codigo, nombre.trim());
 
         // 2. 🛑 VERIFICACIÓN DE UNICIDAD USANDO EL DAO 🛑
-        PersonaVO personaExistente = dao.obtenerPersonaPorCodigo(codigo);
+        PersonaVO personaExistente = dao.obtenerXCodigo(codigo);
 
         if (personaExistente != null) {
             // Error: Código duplicado
@@ -95,9 +95,30 @@ public class PersonaControladorServlet extends HttpServlet {
         }
 
         // 3. Si es único (personaExistente == null), agregar
-        dao.agregarPersona(personaParaFormulario);
+        dao.agregar(personaParaFormulario);
 
         // 4. PRG (Redirección al listado)
+        response.sendRedirect(request.getContextPath() + "/persona");
+
+    }
+
+    private void editar(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        int codigo = Integer.parseInt(request.getParameter("codigo"));
+        String nombre = request.getParameter("nombre");
+        dao.actualizar(new PersonaVO(codigo, nombre));
+        // PRG → volver a listar
+        response.sendRedirect(request.getContextPath() + "/persona");
+    }
+
+    private void eliminar(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+
+        int codigo = Integer.parseInt(request.getParameter("codigo"));
+
+        dao.eliminar(codigo);
+
+        // PRG → volver a listar
         response.sendRedirect(request.getContextPath() + "/persona");
     }
 
@@ -106,7 +127,7 @@ public class PersonaControladorServlet extends HttpServlet {
 
         int codigo = Integer.parseInt(request.getParameter("codigo"));
 
-        PersonaVO persona = dao.obtenerPersonaPorCodigo(codigo);
+        PersonaVO persona = dao.obtenerXCodigo(codigo);
 
         if (persona != null) {
 
@@ -121,29 +142,9 @@ public class PersonaControladorServlet extends HttpServlet {
         }
     }
 
-    private void editar(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
-        int codigo = Integer.parseInt(request.getParameter("codigo"));
-        String nombre = request.getParameter("nombre");
-        dao.actualizarPersona(new PersonaVO(codigo, nombre));
-        // PRG → volver a listar
-        response.sendRedirect(request.getContextPath() + "/persona");
-    }
-
-    private void eliminar(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
-
-        int codigo = Integer.parseInt(request.getParameter("codigo"));
-
-        dao.eliminarPersona(codigo);
-
-        // PRG → volver a listar
-        response.sendRedirect(request.getContextPath() + "/persona");
-    }
-
     private void listar(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setAttribute("personas", dao.listarPersonas());
+        request.setAttribute("personas", dao.getLista());
         request.getRequestDispatcher("/WEB-INF/vista/persona-lista.jsp")
                 .forward(request, response);
     }

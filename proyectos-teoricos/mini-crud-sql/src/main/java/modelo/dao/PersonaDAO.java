@@ -4,12 +4,11 @@ import modelo.conexion.Conexion;
 import modelo.vo.PersonaVO;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class PersonaDAO {
 
-    public List<PersonaVO> listarPersonas() {
-        List<PersonaVO> lista = new ArrayList<>();
+    public ArrayList<PersonaVO> getLista() {
+        ArrayList<PersonaVO> lista = new ArrayList<>();
         // FASE 1: Definir la sentencia SQL
         String sql = "SELECT * FROM personas";
 
@@ -31,56 +30,53 @@ public class PersonaDAO {
         return lista;
     }
 
-    public boolean agregarPersona(PersonaVO persona) {
+    public String agregar(PersonaVO p) {
         // FASE 1: Definir la sentencia SQL
         String sql = "INSERT INTO personas(codigo, nombre) VALUES (?, ?)";
-        boolean exito = false;
 
         // FASES 2 y 3: conexión y PreparedStatement en try-with-resources
         try (Connection con = Conexion.obtener();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             // FASE 3: Asignar parámetros
-            ps.setInt(1, persona.getCodigo());
-            ps.setString(2, persona.getNombre());
+            ps.setInt(1, p.getCodigo());
+            ps.setString(2, p.getNombre());
             // FASE 4: Ejecutar (INSERT no tiene FASE 5)
-            exito = ps.executeUpdate() > 0;
-            System.out.println("Persona agregada: " + persona);
+            ps.executeUpdate();
+            return "Persona agregada correctamente.";
         } catch (SQLException e) {
             System.err.println("Error al agregar persona: " + e.getMessage());
             e.printStackTrace();
+            return "Error al agregar persona.";
         }
-        return exito;
     }
 
-    public boolean actualizarPersona(PersonaVO persona) {
+    public String actualizar(PersonaVO p) {
         // FASE 1: Definir la sentencia SQL
         String sql = "UPDATE personas SET nombre = ? WHERE codigo = ?";
-        boolean exito = false;
 
         // FASES 2 y 3: conexión y PreparedStatement en try-with-resources
         try (Connection con = Conexion.obtener();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             // FASE 3: Asignar parámetros
-            ps.setString(1, persona.getNombre());
-            ps.setInt(2, persona.getCodigo());
-            // FASE 4: Ejecutar
-            exito = ps.executeUpdate() > 0;
-
-            if (exito) System.out.println("Persona actualizada: " + persona);
-            else System.out.println("No se encontró persona con código " + persona.getCodigo());
+            ps.setString(1, p.getNombre());
+            ps.setInt(2, p.getCodigo());
+            // FASE 4: Ejecutar (devuelve cuántas filas cambiaron)
+            if (ps.executeUpdate() > 0) {
+                return "Persona actualizada.";
+            }
+            return "Persona no encontrada.";
         } catch (SQLException e) {
             System.err.println("Error al actualizar persona: " + e.getMessage());
             e.printStackTrace();
+            return "Error al actualizar persona.";
         }
-        return exito;
     }
 
-    public boolean eliminarPersona(int codigo) {
+    public String eliminar(int codigo) {
         // FASE 1: Definir la sentencia SQL
         String sql = "DELETE FROM personas WHERE codigo = ?";
-        boolean exito = false;
 
         // FASES 2 y 3: conexión y PreparedStatement en try-with-resources
         try (Connection con = Conexion.obtener();
@@ -88,19 +84,19 @@ public class PersonaDAO {
 
             // FASE 3: Asignar parámetros
             ps.setInt(1, codigo);
-            // FASE 4: Ejecutar
-            exito = ps.executeUpdate() > 0;
-
-            if (exito) System.out.println("Persona " + codigo + " eliminada");
-            else System.out.println("No se encontró persona con código " + codigo);
+            // FASE 4: Ejecutar (devuelve cuántas filas se borraron)
+            if (ps.executeUpdate() > 0) {
+                return "Persona eliminada.";
+            }
+            return "Persona no encontrada.";
         } catch (SQLException e) {
             System.err.println("Error al eliminar persona: " + e.getMessage());
             e.printStackTrace();
+            return "Error al eliminar persona.";
         }
-        return exito;
     }
 
-    public PersonaVO obtenerPersonaPorCodigo(int codigo) {
+    public PersonaVO obtenerXCodigo(int cod) {
         // FASE 1: Definir la sentencia SQL
         String sql = "SELECT * FROM personas WHERE codigo = ?";
         PersonaVO persona = null;
@@ -110,7 +106,7 @@ public class PersonaDAO {
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             // FASE 3: Asignar parámetros
-            ps.setInt(1, codigo);
+            ps.setInt(1, cod);
             // FASE 4: Ejecutar (ResultSet en try anidado)
             try (ResultSet rs = ps.executeQuery()) {
                 // FASE 5: Leer el ResultSet (if, porque codigo es clave única)
