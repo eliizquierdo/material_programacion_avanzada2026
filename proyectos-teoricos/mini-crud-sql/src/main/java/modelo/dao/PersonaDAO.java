@@ -33,6 +33,7 @@ public class PersonaDAO {
     public String agregar(PersonaVO p) {
         // FASE 1: Definir la sentencia SQL
         String sql = "INSERT INTO personas(codigo, nombre) VALUES (?, ?)";
+        String mensaje = "Error al agregar persona.";
 
         // FASES 2 y 3: conexión y PreparedStatement en try-with-resources
         try (Connection con = Conexion.obtener();
@@ -42,18 +43,19 @@ public class PersonaDAO {
             ps.setInt(1, p.getCodigo());
             ps.setString(2, p.getNombre());
             // FASE 4: Ejecutar (INSERT no tiene FASE 5)
-            ps.executeUpdate();
-            return "Persona agregada correctamente.";
+            int filasAfectadas = ps.executeUpdate();
+            if (filasAfectadas > 0) mensaje = "Persona agregada.";
         } catch (SQLException e) {
             System.err.println("Error al agregar persona: " + e.getMessage());
             e.printStackTrace();
-            return "Error al agregar persona.";
         }
+        return mensaje;
     }
 
     public String actualizar(PersonaVO p) {
         // FASE 1: Definir la sentencia SQL
         String sql = "UPDATE personas SET nombre = ? WHERE codigo = ?";
+        String mensaje = "Persona no encontrada.";
 
         // FASES 2 y 3: conexión y PreparedStatement en try-with-resources
         try (Connection con = Conexion.obtener();
@@ -63,20 +65,20 @@ public class PersonaDAO {
             ps.setString(1, p.getNombre());
             ps.setInt(2, p.getCodigo());
             // FASE 4: Ejecutar (devuelve cuántas filas cambiaron)
-            if (ps.executeUpdate() > 0) {
-                return "Persona actualizada.";
-            }
-            return "Persona no encontrada.";
+            int filasAfectadas = ps.executeUpdate();
+            if (filasAfectadas > 0) mensaje = "Persona actualizada.";
         } catch (SQLException e) {
             System.err.println("Error al actualizar persona: " + e.getMessage());
             e.printStackTrace();
-            return "Error al actualizar persona.";
+            mensaje = "Error al actualizar persona.";
         }
+        return mensaje;
     }
 
     public String eliminar(int codigo) {
         // FASE 1: Definir la sentencia SQL
         String sql = "DELETE FROM personas WHERE codigo = ?";
+        String mensaje = "Persona no encontrada.";
 
         // FASES 2 y 3: conexión y PreparedStatement en try-with-resources
         try (Connection con = Conexion.obtener();
@@ -85,15 +87,14 @@ public class PersonaDAO {
             // FASE 3: Asignar parámetros
             ps.setInt(1, codigo);
             // FASE 4: Ejecutar (devuelve cuántas filas se borraron)
-            if (ps.executeUpdate() > 0) {
-                return "Persona eliminada.";
-            }
-            return "Persona no encontrada.";
+            int filasAfectadas = ps.executeUpdate();
+            if (filasAfectadas > 0) mensaje = "Persona eliminada.";
         } catch (SQLException e) {
             System.err.println("Error al eliminar persona: " + e.getMessage());
             e.printStackTrace();
-            return "Error al eliminar persona.";
+            mensaje = "Error al eliminar persona.";
         }
+        return mensaje;
     }
 
     public PersonaVO obtenerXCodigo(int cod) {
