@@ -21,7 +21,7 @@ public class Main {
         imprimirLista(dao.listarAlumnos());
 
         System.out.println("\n===== 2) Agregar un alumno nuevo =====");
-        AlumnoVO nuevo = new AlumnoVO(99, "Alumno de Prueba", "099123456");
+        AlumnoVO nuevo = new AlumnoVO(99, "Prueba", "099123456");
         boolean agregado = dao.agregarAlumno(nuevo);
         System.out.println("¿Se agregó? " + agregado);
 
@@ -30,7 +30,7 @@ public class Main {
 
         System.out.println("\n===== 4) Demostración de TRANSACCIÓN: intentar agregar el mismo código de nuevo =====");
         System.out.println("(el INSERT en 'personas' va a fallar por código duplicado -> rollback -> no debe quedar nada a medio insertar en 'alumnos')");
-        AlumnoVO duplicado = new AlumnoVO(99, "Alumno Duplicado", "099999999");
+        AlumnoVO duplicado = new AlumnoVO(99, "Duplicado", "099999999");
         boolean agregadoDuplicado = dao.agregarAlumno(duplicado);
         System.out.println("¿Se agregó el duplicado? " + agregadoDuplicado + " (debería ser false)");
 

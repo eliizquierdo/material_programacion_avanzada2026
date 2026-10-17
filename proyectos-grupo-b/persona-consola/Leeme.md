@@ -20,7 +20,7 @@ Reutiliza exactamente las mismas clases `Conexion`, `PersonaDAO` y `PersonaVO` q
 mvn compile exec:java
 ```
 
-La primera vez puede tardar un poco (Maven descarga el conector de MySQL). Vas a ver en la consola el resultado de listar, agregar, buscar, actualizar y eliminar una persona, paso por paso.
+La primera vez puede tardar un poco (Maven descarga el conector de MySQL). Vas a ver en la consola el resultado de listar, agregar, buscar, actualizar y eliminar una persona, paso por paso, con el mensaje que devuelve cada método del DAO.
 
 ## Si da error de conexión
 

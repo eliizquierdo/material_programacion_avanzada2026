@@ -1,7 +1,7 @@
 import modelo.dao.PersonaDAO;
 import modelo.vo.PersonaVO;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Programa de consola para probar el CRUD de PersonaDAO,
@@ -10,6 +10,9 @@ import java.util.List;
  * Corresponde al Tema 3 (Conexión a Bases de Datos) del Grupo B:
  * primero se aprende JDBC en consola, y recién más adelante
  * (Tema 2) se le agrega una interfaz web a este mismo DAO.
+ *
+ * Los métodos agregar, actualizar y eliminar devuelven un mensaje
+ * (String) que indica qué pasó; acá simplemente se imprime.
  */
 public class Main {
 
@@ -18,39 +21,36 @@ public class Main {
         PersonaDAO dao = new PersonaDAO();
 
         System.out.println("===== 1) Listado inicial =====");
-        imprimirLista(dao.listarPersonas());
+        imprimirLista(dao.getLista());
 
         System.out.println("\n===== 2) Agregar una persona nueva =====");
-        PersonaVO nueva = new PersonaVO(99, "Persona de Prueba");
-        boolean agregado = dao.agregarPersona(nueva);
-        System.out.println("¿Se agregó? " + agregado);
+        PersonaVO nueva = new PersonaVO(99, "Prueba");
+        System.out.println(dao.agregar(nueva));
 
         System.out.println("\n===== 3) Listado después de agregar =====");
-        imprimirLista(dao.listarPersonas());
+        imprimirLista(dao.getLista());
 
         System.out.println("\n===== 4) Buscar por código =====");
-        PersonaVO encontrada = dao.obtenerPersonaPorCodigo(99);
+        PersonaVO encontrada = dao.obtenerXCodigo(99);
         System.out.println("Encontrada: " + (encontrada != null ? encontrada.getNombre() : "no existe"));
 
         System.out.println("\n===== 5) Actualizar =====");
         if (encontrada != null) {
-            encontrada.setNombre("Persona de Prueba (editada)");
-            boolean actualizado = dao.actualizarPersona(encontrada);
-            System.out.println("¿Se actualizó? " + actualizado);
+            encontrada.setNombre("Editada");
+            System.out.println(dao.actualizar(encontrada));
         }
 
         System.out.println("\n===== 6) Listado después de actualizar =====");
-        imprimirLista(dao.listarPersonas());
+        imprimirLista(dao.getLista());
 
         System.out.println("\n===== 7) Eliminar =====");
-        boolean eliminado = dao.eliminarPersona(99);
-        System.out.println("¿Se eliminó? " + eliminado);
+        System.out.println(dao.eliminar(99));
 
         System.out.println("\n===== 8) Listado final =====");
-        imprimirLista(dao.listarPersonas());
+        imprimirLista(dao.getLista());
     }
 
-    private static void imprimirLista(List<PersonaVO> personas) {
+    private static void imprimirLista(ArrayList<PersonaVO> personas) {
         if (personas.isEmpty()) {
             System.out.println("(no hay personas registradas)");
             return;
