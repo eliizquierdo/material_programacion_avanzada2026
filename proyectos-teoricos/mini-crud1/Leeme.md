@@ -27,19 +27,19 @@ Sistema web básico para la gestión de personas desarrollado en Java con arquit
 ## Capturas del Proyecto
 
 ### Página Principal
-<img src="https://github.com/eliizquierdo/material-programacion-avanzada/raw/main/ProyectosTeoricos/mini-crud1/index.png" alt="Página Principal" width="400">
+<img src="https://github.com/eliizquierdo/material_programacion_avanzada2026/raw/main/proyectos-teoricos/mini-crud1/index.png" alt="Página Principal" width="400">
 
 ### Formulario Agregar Persona
-<img src="https://github.com/eliizquierdo/material-programacion-avanzada/raw/main/ProyectosTeoricos/mini-crud1/agregarPersona.png" alt="Formulario Agregar Personas" width="500">
+<img src="https://github.com/eliizquierdo/material_programacion_avanzada2026/raw/main/proyectos-teoricos/mini-crud1/agregarPersona.png" alt="Formulario Agregar Personas" width="500">
 
 ### Lista de Personas  
-<img src="https://github.com/eliizquierdo/material-programacion-avanzada/raw/main/ProyectosTeoricos/mini-crud1/listarPersonas.png" alt="Lista Personas" width="600">
+<img src="https://github.com/eliizquierdo/material_programacion_avanzada2026/raw/main/proyectos-teoricos/mini-crud1/listarPersonas.png" alt="Lista Personas" width="600">
 
 ### Formulario Editar
-<img src="https://github.com/eliizquierdo/material-programacion-avanzada/raw/main/ProyectosTeoricos/mini-crud1/editarPersona.png" alt="Formulario Editar" width="500">
+<img src="https://github.com/eliizquierdo/material_programacion_avanzada2026/raw/main/proyectos-teoricos/mini-crud1/editarPersona.png" alt="Formulario Editar" width="500">
 
 ### Confirmación de Eliminar
-<img src="https://github.com/eliizquierdo/material-programacion-avanzada/raw/main/ProyectosTeoricos/mini-crud1/eliminar.png" alt="Confirmar Eliminar" width="500">
+<img src="https://github.com/eliizquierdo/material_programacion_avanzada2026/raw/main/proyectos-teoricos/mini-crud1/eliminar.png" alt="Confirmar Eliminar" width="500">
 
 ## Estructura del Proyecto
 
@@ -147,7 +147,7 @@ Este proyecto demuestra conceptos fundamentales del desarrollo web Java:
 
 - **Autor**: Prof. Elizabeth Izquierdo
 - **Email**: profe.eliza17@gmail.com
-- **Wiki**: [Material de Programación Avanzada](https://github.com/eliizquierdo/material-programacion-avanzada/wiki)
+- **Wiki**: [Material de Programación Avanzada](https://github.com/eliizquierdo/material_programacion_avanzada2026/wiki)
 - **Reportar problemas**: Issues de GitHub
 - **Sugerencias**: Pull requests bienvenidos
 
